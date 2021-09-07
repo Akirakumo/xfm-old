@@ -11,8 +11,6 @@ const IconText = ({ icon, text }) => (
   </Space>
 );
 
-
-
 export default function Comic () {
 
     const [dirList,setDirList] = useState([])
@@ -20,8 +18,10 @@ export default function Comic () {
   
     useEffect(()=>{
       console.log('comic启动');
+
       // 获取文件夹数据
       getDirList()
+
       return () => {
           console.log('comic关闭');
       }
@@ -50,10 +50,6 @@ export default function Comic () {
         console.log(err);
       });
     }
-
-    function addStar(){
-
-    }
     
     return (
         <List
@@ -70,7 +66,7 @@ export default function Comic () {
                 <Card 
                     title={item.title}
                     actions={[
-                        <IconText icon={StarOutlined} key="list-vertical-star-o" onClick={} />,
+                        <IconText icon={StarOutlined} key="list-vertical-star-o" />,
                         <IconText icon={MessageOutlined} text="0" key="list-vertical-message" />,
                         <EditOutlined key="edit" />,
                     ]}
@@ -90,4 +86,4 @@ export default function Comic () {
           )}
         />
     )
-  }
+}
