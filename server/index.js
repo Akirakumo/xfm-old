@@ -1,8 +1,23 @@
+const { rejects } = require('assert');
 const express = require('express');
 const fs = require('fs');
+const { resolve } = require('path');
 const app = express();
 
-const path = 'D:/Storage/COMIC/'
+const path = {
+    comic: 'D:/Storage/COMIC/COMIC',
+    music: 'D:/Music/MUSIC'
+}
+
+function readFiles(path){
+    return new Promise((resolve,reject)=>{
+        fs.readFile(path,(err,data)=>{
+            if(err) reject(err)
+            resolve(data)
+        })
+    })
+}
+
 
 // 解决跨域
 app.use((req, res, next) => {
@@ -18,21 +33,59 @@ app.use('/public', express.static('public'));
 
 app.get('/', (req, res) => {
     console.log('服务启动成功');
-    res.send('启动成功,当前目录' + path)
+})
+
+app.get('/login', (req, res) => {
+    const { username, password, remember } = req.query
+    res.send({
+        login_state: 200,
+        username,
+        password,
+        remember
+    })
 })
 
 // 获取文件夹目录
 app.get('/getDir', (req, res) => {
-    const { name } = req.query
-    console.log('请求文件夹目录');
-    res.send({
-        state:fs.statSync(path + name),
-        list:fs.readdirSync(path + name)
+    const { type,name } = req.query
+
+    console.log('请求文件夹目录'+type+'/'+name);
+
+    const url = name?path[type]+'/'+name:path[type]
+
+    const list = fs.readdirSync(url);
+
+    new Promise((resolve,reject)=>{
+        resolve(
+            list.map((item,index)=>{
+                if(item[0]!='.'){
+                    readFiles(url+'/'+item+'/'+ 'cover.jpg')
+                    .then( val => {
+                        return {
+                            id: index,
+                            title: item,
+                            cover: val
+                        }
+                    },
+                    err => {
+                        console.log(err);
+                        return {
+                            id: index,
+                            title: item,
+                            cover: 'err'
+                        }
+                    })       
+                }
+            })
+        )
+    }).then( val => {
+        res.send(val)
     })
+
 })
 
 // 读取文件信息
-app.get('/getDir', (req, res) => {
+app.get('/getFiles', (req, res) => {
     const { name } = req.query
     res.send(fs.readdirSync(path + name))
 })

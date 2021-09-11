@@ -1,8 +1,10 @@
 import React, {useState,useEffect} from 'react'
-import axios from 'axios'
-
 import { List, Space, Card, Image, Tag } from 'antd'
 import { MessageOutlined,  StarOutlined, EditOutlined } from '@ant-design/icons';
+import { getDir } from '../../ajax'
+import './index.css'
+
+import TopTabs from '../../components/TopTabs'
 
 const IconText = ({ icon, text }) => (
   <Space>
@@ -14,7 +16,6 @@ const IconText = ({ icon, text }) => (
 export default function Comic () {
 
     const [dirList,setDirList] = useState([])
-    const [loading,setloading] = useState(true)
   
     useEffect(()=>{
       console.log('comic启动');
@@ -27,12 +28,8 @@ export default function Comic () {
       }
     },[])
   
-    function getDirList(){
-      axios.get('http://192.168.31.190:8081/getDir', {
-        params: {
-          name: 'COMIC'
-        }
-      })
+    function getDirList(name){
+      getDir({name})
       .then( res => {
         console.log(res);
         let listData = res.data.list.map((item,index) => {
@@ -52,13 +49,15 @@ export default function Comic () {
     }
     
     return (
+      <TopTabs >
         <List
           itemLayout="vertical"
           size="large"
           grid={{ xs:1,sm:2,md:3,lg:4,xl:5,xxl:6 }}
           pagination={{
+            position: 'both',
             onChange: page => console.log(page),
-            pageSize: 50,
+            defaultPageSize: 50,
           }}
           dataSource={dirList}
           renderItem={ item => (
@@ -85,5 +84,6 @@ export default function Comic () {
             </List.Item>
           )}
         />
+      </TopTabs>
     )
 }
