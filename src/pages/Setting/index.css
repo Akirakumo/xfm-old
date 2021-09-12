@@ -27,3 +27,12 @@
     margin-top: 16px;
     text-align: center;
 }
+
+.card {
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.ant-typography-expand, .ant-typography-edit, .ant-typography-copy {
+    margin-left: 10px;
+}

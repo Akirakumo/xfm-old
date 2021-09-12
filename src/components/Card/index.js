@@ -4,7 +4,7 @@ import './index.css'
 
 export default function myCard (props) {
     return (
-        <Card className="card" title={props.title} bordered={false}>
+        <Card className="card" title={props.title} bordered={false} hoverable>
             {props.children}
         </Card>
     )
