@@ -4,6 +4,10 @@
     position: fixed;
     left: 0;
   }
+  .ant-layout-sider .ant-layout-sider-trigger {
+    color: #202124;
+    background: #fff;
+  }
   
   .logo {
     width: 100%;
@@ -21,3 +25,4 @@
   .site-layout .site-layout-background {
     margin: 5px 15px 25px;
   }
+

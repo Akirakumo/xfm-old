@@ -3,25 +3,22 @@ import { NavLink } from 'react-router-dom'
 import { Menu } from 'antd';
 import {
   ReadOutlined,
-  DesktopOutlined,
-  MailOutlined,
+  PlayCircleOutlined,
+  SettingOutlined
 } from '@ant-design/icons';
 
 export default function SideMenu () {
 
     return (
         <>
-            <Menu theme="dark" defaultSelectedKeys={['setting']} mode="inline">
-                <Menu.Item key="1" icon={<ReadOutlined />}>
+            <Menu defaultSelectedKeys={['setting']} mode="inline">
+                <Menu.Item key="comic" icon={<ReadOutlined />}>
                     <NavLink to='/comic'>COMIC</NavLink>
                 </Menu.Item>
-                <Menu.Item key="2" icon={<DesktopOutlined />}>
-                    <NavLink to='/asmr'>ASMR</NavLink>
+                <Menu.Item key="music" icon={<PlayCircleOutlined />}>
+                    <NavLink to='/music'>MUSIC</NavLink>
                 </Menu.Item>
-                <Menu.Item key="3" icon={<MailOutlined />}>
-                    <NavLink to='/music'>Music</NavLink>
-                </Menu.Item>
-                <Menu.Item key="setting" icon={<MailOutlined />}>
+                <Menu.Item key="setting" icon={<SettingOutlined />}>
                     <NavLink to='/setting'>设置</NavLink>
                 </Menu.Item>
             </Menu>

@@ -104,5 +104,5 @@ app.get('/getFile', (req, res) => {
 })
 
 app.listen(8081, () => {
-    console.log("服务器已启动，访问地址:http://localhost:8081 或 http://192.168.31.190/:8081")
+    console.log("服务器已启动，访问地址:http://localhost:8081 或 http://192.168.31.190:8081")
 })

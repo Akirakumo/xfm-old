@@ -1,12 +1,13 @@
-import React, { useState, useRef, useMemo, useCallback } from 'react'
+import React, { useState, useRef, useCallback } from 'react'
 import { Tabs, Button } from 'antd';
 import './index.css'
+// import Loading from '../Loading';
 const { TabPane } = Tabs;
 
 
 export default function TopTabs (props) {
 
-  let [panes,setPanes] = useState([{ title: 'COMIC', content: <Button onClick={()=>add()}>ADD</Button>, key: '1' , closable: false}])
+  let [panes,setPanes] = useState([{ title: 'COMIC', content: <div><Button onClick={()=>add()}>ADD</Button></div>, key: '1' , closable: false}])
   let [activeKey,setActiveKey] = useState('1')
   let useKeys = useRef(1)
 

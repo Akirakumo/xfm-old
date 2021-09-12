@@ -2,6 +2,7 @@ import React, { createContext,useReducer } from 'react'
 
 // 初始化公共状态
 const initState = {
+    userName: 'guest',
     isLogin: false
 }
 

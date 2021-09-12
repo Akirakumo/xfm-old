@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import { Form, Input, Button, Checkbox, message } from 'antd';
-import { UserOutlined, LockOutlined, PoweroffOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { login } from '../../ajax'
 import './index.css'
 
