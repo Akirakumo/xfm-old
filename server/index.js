@@ -1,15 +1,14 @@
-const { rejects } = require('assert');
 const express = require('express');
 const fs = require('fs');
-const { resolve } = require('path');
+const path = require('path');
 const app = express();
 
-const path = {
+const path_type = {
     comic: 'D:/Storage/COMIC/COMIC',
     music: 'D:/Music/MUSIC'
 }
 
-function readFiles(path){
+function doReadFiles(path){
     return new Promise((resolve,reject)=>{
         fs.readFile(path,(err,data)=>{
             if(err) reject(err)
@@ -17,7 +16,6 @@ function readFiles(path){
         })
     })
 }
-
 
 // 解决跨域
 app.use((req, res, next) => {
@@ -49,50 +47,29 @@ app.get('/login', (req, res) => {
 app.get('/getDir', (req, res) => {
     const { type,name } = req.query
 
-    console.log('请求文件夹目录'+type+'/'+name);
+    const path_name = name ? name : ''
 
-    const url = name?path[type]+'/'+name:path[type]
+    console.log(type,name);
 
-    const list = fs.readdirSync(url);
+    const dir_path = path.join(path_type[type],path_name)
 
-    new Promise((resolve,reject)=>{
-        resolve(
-            list.map((item,index)=>{
-                if(item[0]!='.'){
-                    readFiles(url+'/'+item+'/'+ 'cover.jpg')
-                    .then( val => {
-                        return {
-                            id: index,
-                            title: item,
-                            cover: val
-                        }
-                    },
-                    err => {
-                        console.log(err);
-                        return {
-                            id: index,
-                            title: item,
-                            cover: 'err'
-                        }
-                    })       
-                }
-            })
-        )
-    }).then( val => {
-        res.send(val)
-    })
+    console.log('请求文件夹目录' + dir_path);
 
+    const list = fs.readdirSync(dir_path);
+    
+    res.send(list)
 })
 
 // 读取文件信息
 app.get('/getFiles', (req, res) => {
     const { name } = req.query
-    res.send(fs.readdirSync(path + name))
+    res.send()
 })
 
 // 读取文件
 app.get('/getFile', (req, res) => {
-    let { path,name } = req.query;
+    const { path,name } = req.query;
+
     fs.readFile(path + name,(err,data)=>{
         if (!err) {
             res.send(data)

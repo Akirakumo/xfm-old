@@ -29,7 +29,7 @@ export default function Comic () {
     },[])
   
     function getDirList(name){
-      getDir({name})
+      getDir({type:'comic',name})
       .then( res => {
         console.log(res);
         let listData = res.data.list.map((item,index) => {

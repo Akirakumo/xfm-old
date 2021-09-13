@@ -23,6 +23,7 @@
   }
   
   .site-layout .site-layout-background {
-    margin: 5px 15px 25px;
+    padding: 15px;
+    overflow: auto;
   }
 

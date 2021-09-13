@@ -58,6 +58,8 @@ export default function Setting () {
                 <Title level={5}>是否启用密码: <Switch /></Title>
                 </Card>
                 <Card title="后台服务" className="card">
+                    <Button>查看日志</Button>
+                    <Divider />
                     <Button>重启后台监视器</Button>
                     <Divider />
                     <Button>清理临时文件夹</Button>
