@@ -1,20 +1,13 @@
 const express = require('express');
 const fs = require('fs');
+const { resolve } = require('path');
 const path = require('path');
 const app = express();
+const { isFileExisted } = require('./readFile')
 
 const path_type = {
     comic: 'D:/Storage/COMIC/COMIC',
     music: 'D:/Music/MUSIC'
-}
-
-function doReadFiles(path){
-    return new Promise((resolve,reject)=>{
-        fs.readFile(path,(err,data)=>{
-            if(err) reject(err)
-            resolve(data)
-        })
-    })
 }
 
 // 解决跨域
@@ -49,35 +42,52 @@ app.get('/getDir', (req, res) => {
 
     const path_name = name ? name : ''
 
-    console.log(type,name);
-
     const dir_path = path.join(path_type[type],path_name)
+    const json_path = './data/'+ type + '.json'
 
     console.log('请求文件夹目录' + dir_path);
+    console.log('请求json目录' + json_path);
 
-    const list = fs.readdirSync(dir_path);
-    
-    res.send(list)
-})
-
-// 读取文件信息
-app.get('/getFiles', (req, res) => {
-    const { name } = req.query
-    res.send()
+    (async (json_path,dir_path) => { 
+        try{
+            const flag = await isFileExisted(json_path) 
+            if(flag){
+                fs.readFile(json_path,(err,data) => {
+                    if (err) console.log(err.message)
+                    if (data[0] === 0xEF && data[1] === 0xBB && data[2] === 0xBF) {
+                        //去除特殊符号，就是这些符号让数据无法解析
+                        data = data.slice(3);
+                    }
+                    data = data.toString('utf-8');//指定编码方式
+                    res.send(data)
+                })
+            }else{
+                let dir_list = fs.readdirSync(dir_path);
+                let files_list = dir_list.map( file => {
+                    let files = fs.readdirSync(path.join(dir_path,file))
+                    return {
+                        name: file,
+                        files
+                    }
+                })
+                fs.open(json_path,'w',(err,fd)=>{
+                    if (err) throw err
+                    let str = JSON.stringify(files_list)
+                    fs.write(fd,str,(err,data) => {
+                        if (err) throw err
+                        res.send(str)
+                    })
+                })
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    })(json_path,dir_path)
 })
 
 // 读取文件
 app.get('/getFile', (req, res) => {
     const { path,name } = req.query;
-
-    fs.readFile(path + name,(err,data)=>{
-        if (!err) {
-            res.send(data)
-        } else {
-            console.log(err);
-            res.send(err)
-        }
-    })
 })
 
 app.listen(8081, () => {
