@@ -1,30 +1,6 @@
 import React, { createContext,useReducer } from 'react'
-
-// 初始化公共状态
-const initState = {
-    userName: 'guest',
-    avatar: null,
-    isLogin: false
-}
-
-// action的type常量
-export const UPDATA_USERNAME = 'UPDATA_USERNAME'
-
-// reducer
-const reducer = (state,action) => {
-    
-    const {type,data} = action
-
-    switch(type){
-        case UPDATA_USERNAME:
-            return {
-                ...data,
-                userName: data.userName
-            }
-        default:
-            return state
-    }
-}
+import initState from './state'
+import reducer from './reducer'
 
 // 创建一个共享状态
 export const AppContext = createContext({})

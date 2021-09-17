@@ -3,6 +3,7 @@
     height: 100vh;
     position: fixed;
     left: 0;
+    box-shadow: 5px 0 10px #ccc;
   }
   .ant-layout-sider .ant-layout-sider-trigger {
     color: #202124;
