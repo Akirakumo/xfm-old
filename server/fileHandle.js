@@ -15,17 +15,27 @@ function isFileExisted (_path) {
     })
 }
 
-function readZip (_path) {
-    let zip = new admzip(_path);
-    let zipEntries = zip.getEntries();
-    zipEntries.forEach(zipEntry => {
-        if (zipEntry.isDirectory === false) {
-            console.log("pop=>"+zipEntry.entryName.toString().split("/").pop())
-            if((zipEntry.entryName.toString().split("/").pop() )==("info.json")){
-                console.log("=>"+zip.readAsText("result/info.json"))
-            }
-        }
-    });
+// function readZip (_path) {
+//     let zip = new admzip(_path);
+//     let zipEntries = zip.getEntries();
+//     zipEntries.forEach(zipEntry => {
+//         if (zipEntry.isDirectory === false) {
+//             console.log("pop=>"+zipEntry.entryName.toString().split("/").pop())
+//             if((zipEntry.entryName.toString().split("/").pop() )==("info.json")){
+//                 console.log("=>"+zip.readAsText("result/info.json"))
+//             }
+//         }
+//     });
+// }
+function readZip (params) {
+    const { id, path, name } = params
+    return new Promise ( (resolve,reject) =>{
+        const zip = new admzip(`${path}/${name}`);
+        // 获取所有zip中entry并遍历
+        let zipFiles = zip.getEntries();
+        let img = zip.readFile(zipFiles[0])
+        resolve({len:zipFiles.length,img})
+    } )
 }
 
 function makeCover (params) {
@@ -46,9 +56,9 @@ function readJSON (jsonPath) {
         fs.readFile(jsonPath)
         .then( data => {
             if (data[0] === 0xEF && data[1] === 0xBB && data[2] === 0xBF) {
-                data = data.slice(3); // 去除特殊符号，就是这些符号让数据无法解析
+                data = data.slice(3); // 去除特殊符号
             }
-            data = data.toString('utf-8');// 指定编码方式
+            data = data.toString('utf-8');
             resolve(data)
         })
         .catch(
@@ -56,18 +66,6 @@ function readJSON (jsonPath) {
         )
     })
 }
-
-function readZip (params) {
-    const { id, path, name } = params
-    return new Promise ( (resolve,reject) =>{
-        const zip = new admzip(`${path}/${name}`);
-        // 获取所有zip中entry并遍历
-        let zipFiles = zip.getEntries();
-        let img = zip.readFile(zipFiles[0])
-        resolve({len:zipFiles.length,img})
-    } )
-}
-
 
 async function makeData (dirPath) {
     const list = await fs.readdir(dirPath)
@@ -81,7 +79,8 @@ async function makeData (dirPath) {
             id: nanoid(),
             path: dirPath,
             name: file,
-            stats
+            tags: [],
+            stats,
         })
     }
 

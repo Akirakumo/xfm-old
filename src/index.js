@@ -1,19 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import {BrowserRouter} from 'react-router-dom';
-import {MyProvider} from './context' 
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
+import { MyProvider } from "./context/index";
+import App from "./App.jsx";
 
-import './index.css';
+import "./index.less";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <MyProvider>
-        <App />
-      </MyProvider>
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root')
+  <BrowserRouter>
+    <MyProvider>
+      <App />
+    </MyProvider>
+  </BrowserRouter>,
+  document.getElementById("root")
 );
-
