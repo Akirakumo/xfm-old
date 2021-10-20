@@ -1,6 +1,6 @@
 module.exports = {
     dirPath: {
-        comic: 'D:/Storage/COMIC/TEST',
-        music: 'D:/Music/MUSIC'
+        comic: 'D:/Storage/COMICDB/',
+        music: 'D:/Music/ALBUM'
     }
 }

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const req_path = "http://172.0.0.1/8081";
+export const req_path = "http://127.0.0.1:8081";
 
 export const get = (url, params) => {
   return new Promise((resolve, reject) => {

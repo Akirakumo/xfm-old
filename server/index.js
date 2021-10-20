@@ -1,15 +1,24 @@
 const express = require("express");
-const app = express();
+const mongoose = require('mongoose');
 const { resolve } = require("path");
+
+require('./utils')
+
+const app = express();
 const { dirPath } = require("./config");
 const {
   isFileExisted,
-  makeCover,
   readJSON,
-  makeData,
-  readZip,
+  initData,
   createJSON,
-} = require("./fileHandle");
+} = require("./handleFiles");
+
+// 连接数据库
+mongoose.connect('mongodb://localhost/storage');
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => console.log('数据库连接成功'));
 
 // 解决跨域
 app.use((req, res, next) => {
@@ -32,9 +41,9 @@ app.get("/", (req, res) => {
   res.send("服务启动成功");
 });
 
-app.get("/public/thumb/*", function (req, res) {
+app.get("/public/thumb/comic/*", function (req, res) {
   console.log(req.url);
-  res.sendFile(__dirname + "/" + req.url);
+  res.sendFile(__dirname + '/' + req.url);
 });
 
 app.get("/login", (req, res) => {
@@ -47,55 +56,37 @@ app.get("/login", (req, res) => {
 });
 
 // 获取文件夹目录数据
-app.get("/getDir", (req, res) => {
-  const { type, name } = req.query;
-  const target_name = name ? name : "";
-  const dir_path = resolve(dirPath[type], target_name);
+app.get("/getDirData", (req, res) => {
+
+  const { type } = req.query;
+
+  // const _dirPah = 
+
+  const dir_path = resolve(dirPath[type]);
+
   const json_path = resolve(__dirname, "data", `${type}.json`);
+
+  console.log('收到请求/getDirData'+type);
+
   (async () => {
     try {
       const flag = await isFileExisted(json_path);
-
       if (flag) {
         console.log("请求json目录" + json_path);
-
         const data = await readJSON(json_path);
-
         res.send(data);
       } else {
         console.log("请求文件夹目录" + dir_path);
-
-        let list = await makeData(dir_path);
-
-        for (let file of list) {
-          const { id, name } = file;
-
-          // let zip = await readZip(file)
-
-          // file.filesLength = zip.len;
-
-          // await makeCover({
-          //     originFile: zip.img,
-          //     newPath: `/public/thumb/${id}.jpg`,
-          //     height: 200
-          // })
-
-          // file.cover = `/public/thumb/${id}.jpg`
-
-          // file.event = name.match(/^\(\S*/)?name.match(/^\(\S*/)[0].slice(1,-1):'';
-        }
-
-        console.log(list);
-
-        // await createJSON(type,JSON.stringify(list))
-
-        res.send(list);
+        const data = await initData(dir_path, type);
+        await createJSON(type,JSON.stringify(data))
+        res.send(data);
       }
     } catch (err) {
       console.error(err);
     }
   })();
 });
+
 
 let server = app.listen(8081, "localhost", () => {
   const host = server.address().address;

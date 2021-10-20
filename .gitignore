@@ -5,8 +5,9 @@ node_modules
 /.pnp
 .pnp.js
 /server/node_modules
-/server/public/img/
+/server/public/images/thumb/
 /server/public/thumb/
+/server/data/
 # testing
 /coverage
 

@@ -1,5 +1,5 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { NavLink, withRouter } from "react-router-dom";
 import { Menu } from "antd";
 import {
   ReadOutlined,
@@ -7,10 +7,13 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 
-export default function SideMenu() {
+function SideMenu(props) {
   return (
     <>
-      <Menu defaultSelectedKeys={["setting"]} mode="inline">
+      <Menu
+        defaultSelectedKeys={[props.location.pathname.slice(1) || "setting"]}
+        mode="inline"
+      >
         <Menu.Item key="comic" icon={<ReadOutlined />}>
           <NavLink to="/comic">COMIC</NavLink>
         </Menu.Item>
@@ -24,3 +27,5 @@ export default function SideMenu() {
     </>
   );
 }
+
+export default withRouter(SideMenu);
