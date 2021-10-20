@@ -1,6 +1,7 @@
 
-$ ..\haha-otaku\server> node index.js
-启动server
+启动后台服务
+$ haha-otaku\server>nodemon index.js
 
-$ ..\haha-otaku> npm start
 启动项目
+$ haha-otaku>npm start
+
