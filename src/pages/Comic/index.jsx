@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { List } from "antd";
+
 import { get } from "../../ajax";
 import ListCardItem from "../../components/ListCardItem"
+
 import "./index.less";
+
 
 
 export default function Comic() {
@@ -19,8 +22,11 @@ export default function Comic() {
       type: "comic",
     })
       .then((res) => {
+
         console.log("dirList", res);
+
         setDirList(res);
+        
       })
       .catch((err) => console.error(err));
 

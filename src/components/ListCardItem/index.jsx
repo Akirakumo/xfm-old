@@ -23,8 +23,8 @@ export default function ListCardItem (props) {
 
     return (
         <Card
+          className="list-card-item"
           hoverable
-          // title={fileName}
           cover={
             <Image className="card-cover" src={cover} fallback={ defaultPic } />
           }
