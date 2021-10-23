@@ -16,9 +16,7 @@ export default function Setting() {
   const { state: { userName }, dispatch } = useContext(AppContext)
 
 
-
   // state
-
   const [path, setPath] = useState("D:/Storage/")
 
   // effect
@@ -31,7 +29,7 @@ export default function Setting() {
 
   return (
     <>
-    <Tabs className="tabs" defaultActiveKey="1" size="large">
+    <Tabs className="setting tabs" defaultActiveKey="1" size="large">
       <TabPane className="tab-pane" tab="信息中心" key="1">
         <InfoCenter />
       </TabPane>

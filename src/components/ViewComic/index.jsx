@@ -1,41 +1,35 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { List } from "antd";
 
+import ListCardItem from "../ListCardItem"
 import { get } from "../../ajax";
-import ListCardItem from "../../components/ListCardItem"
 
 import "./index.less";
 
 
-
-export default function Comic() {
+export default function Comic(props) {
 
   // state
-  const [dirList, setDirList] = useState([]);
+  const [dirList, setDirList] = useState([])
 
   // effect
   useEffect(() => {
+    
+    console.log(props)
 
-    console.log("comic启动");
-
-    get("/getDirData", {
-      type: "comic",
+    get('/getDirData', { type: 'comic'} )
+    .then( res => {
+      console.log('comicData', res)
+      setDirList(res)
     })
-      .then((res) => {
+    .catch( err => console.error(err))
 
-        console.log("dirList", res);
+  }, [])
 
-        setDirList(res);
-        
-      })
-      .catch((err) => console.error(err));
-
-    return () => {
-      console.log("comic关闭");
-    };
-  }, []);
 
   return (
+    <>
+    <div className="comic">
     <List
       // sitemLayout="vertical"
       // size="large"
@@ -62,5 +56,7 @@ export default function Comic() {
         </List.Item>
       )}
     />
-  );
+    </div>
+    </>
+  )
 }

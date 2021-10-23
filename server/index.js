@@ -52,6 +52,14 @@ app.get("/login", (req, res) => {
   });
 });
 
+// 获取目录
+app.get('/views', (req, res) => {
+  res.send([
+    { type: 'comic', name: 'COMIC', url: 'd:/Storage/COMICDB/' },
+    { type: 'music', name: 'MUSIC', url: 'd:/Music/ALBUM/' }
+  ]);
+})
+
 // 获取图片
 app.get("/public/thumb/comic/*", function (req, res) {
   console.log(req.url);

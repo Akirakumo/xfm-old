@@ -19,7 +19,6 @@ function openSysInfo(socket) {
                 memUsage: ((totalMem - freeMem) / totalMem * 100.0).toFixed(2),
             };
             socket.emit("system info", data)
-            console.log(data)
         }, 1500)
     }
 }
