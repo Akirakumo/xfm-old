@@ -2,8 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { Card, Image, Space, Tag  } from "antd";
 import { MessageOutlined, StarOutlined, EditOutlined } from "@ant-design/icons";
 
-import { AppContext } from "../../context";
-
 import "./index.less"
 
 const { Meta } = Card;
@@ -18,15 +16,13 @@ export default function ListCardItem (props) {
 
     const { fileName, cover } = props.item;
 
-    // context
-    const { state: { defaultPic } } = useContext(AppContext);
-
     return (
         <Card
           className="list-card-item"
           hoverable
           cover={
-            <Image className="card-cover" src={cover} fallback={ defaultPic } />
+            <div className="card-cover" style={{backgroundImage:`url(${cover})`}}/>
+            // src={cover} fallback={ defaultPic } preview={false}
           }
           actions={[
             <IconText icon={StarOutlined} key="list-vertical-star-o" />,

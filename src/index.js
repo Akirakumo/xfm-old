@@ -1,16 +1,33 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import { MyProvider } from "./context/index";
-import App from "./App.jsx";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { BrowserRouter } from 'react-router-dom'
+import App from './App.jsx'
 
-import "./index.less";
+// redux
+import store from './redux/store'
+import { Provider } from 'react-redux'
 
+// useContext
+// import { MyProvider } from './context'
+
+import './index.less'
+
+// redux
 ReactDOM.render(
-  <BrowserRouter>
-    <MyProvider>
+  <Provider store={store}>
+    <BrowserRouter>
       <App />
-    </MyProvider>
-  </BrowserRouter>,
-  document.getElementById("root")
-);
+    </BrowserRouter>
+  </Provider>,
+  document.getElementById('root')
+)
+
+// useContext
+// ReactDOM.render(
+//   <MyProvider>
+//     <BrowserRouter>
+//       <App />
+//     </BrowserRouter>
+//   </MyProvider>,
+//   document.getElementById('root')
+// )

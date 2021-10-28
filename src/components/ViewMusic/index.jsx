@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { List, Image, Breadcrumb } from "antd";
-import { AppContext } from "../../context";
 import { get, path } from "../../ajax";
 import MusicItem from "../MusicItem";
 import "./index.less";
@@ -8,7 +7,6 @@ import "./index.less";
 export default function Music() {
   const [dirData, setDirData] = useState([]);
   const [openMusicDir, setopenMusicDir] = useState("");
-  const { state: { defaultPic } } = useContext(AppContext);
 
   useEffect(() => {
     // 获取文件夹数据
@@ -48,7 +46,7 @@ export default function Music() {
             <MusicItem
               title={item.name}
               cover={
-                <Image src={`${path}${item.cover}`} fallback={defaultPic} />
+                <div src={`${path}${item.cover}`} />
               }
             ></MusicItem>
           </List.Item>

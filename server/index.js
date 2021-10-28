@@ -1,22 +1,25 @@
 const express = require('express')
 const app = express()
-const server = require('http').Server(app)
-var io = require('socket.io')(server, { cors: true })
-
-const { openSysInfo, closeSysInfo } = require('./sysInfo');
-
 const os = require('os');
-const db = require('./db')
+const server = require('http').Server(app)
+const io = require('socket.io')(server, { cors: true })
+
+
+
+// 数据库
+const mg = require('./mongo')
+const rds = require('./redis')
+
+
 const { resolve } = require('path')
 const { dirPath } = require('./config')
+const { openSysInfo, closeSysInfo } = require('./sysInfo')
 const {
   isFileExisted,
   readJSON,
   initData,
   createJSON,
 } = require('./handleFiles')
-
-
 
 
 
@@ -36,38 +39,38 @@ app.use((req, res, next) => {
 })
 
 // 设置静态资源路径
-app.use("/public", express.static("public"));
+app.use('/public', express.static('public'))
 
-app.get("/", (req, res) => {
-  res.send("服务启动成功");
-});
+app.get('/', (req, res) => {
+  res.send("服务启动成功")
+})
 
 // 登录
-app.get("/login", (req, res) => {
-  const { username, password, remember } = req.query;
+app.get('/login', (req, res) => {
+  const { username, password, remember } = req.query
   res.send({
     username,
     password,
     remember,
-  });
-});
+  })
+})
 
 // 获取目录
 app.get('/views', (req, res) => {
   res.send([
     { type: 'comic', name: 'COMIC', url: 'd:/Storage/COMICDB/' },
     { type: 'music', name: 'MUSIC', url: 'd:/Music/ALBUM/' }
-  ]);
+  ])
 })
 
 // 获取图片
-app.get("/public/thumb/comic/*", function (req, res) {
+app.get('/public/thumb/comic/*', function (req, res) {
   console.log(req.url);
   res.sendFile(__dirname + '/' + req.url);
-});
+})
 
 // 获取系统信息
-app.get("/sysInfo", (req, res) => {
+app.get('/sysInfo', (req, res) => {
 
   // console.log('CPUS： ' + os.cpus());
 
@@ -96,10 +99,10 @@ app.get("/sysInfo", (req, res) => {
     freemem: (os.freemem() / 1024 / 1024 / 1024).toFixed(1),
     network: os.networkInterfaces()
   });
-});
+})
 
 // 获取文件夹目录数据
-app.get("/getDirData", (req, res) => {
+app.get('/getDirData', (req, res) => {
 
   const { type } = req.query;
 
@@ -113,46 +116,42 @@ app.get("/getDirData", (req, res) => {
     try {
       const flag = await isFileExisted(json_path);
       if (flag) {
-        console.log("请求json目录" + json_path);
-        const data = await readJSON(json_path);
-        res.send(data);
+        console.log("请求json目录" + json_path)
+        const data = await readJSON(json_path)
+        res.send(data)
       } else {
-        console.log("请求文件夹目录" + dir_path);
-        const data = await initData(dir_path, type);
+        console.log("请求文件夹目录" + dir_path)
+        const data = await initData(dir_path, type)
         await createJSON(type, JSON.stringify(data))
-        res.send(data);
+        rds.set('comic', data);
+        res.send(data)
       }
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
   })();
-});
-
-
-
-
+})
 
 
 // socket.io
 io.on('connection', socket => {
 
-  console.log('a user connected');
-  socket.emit("connected", "连接成功")
+  console.log('a user connected')
+  socket.emit('connected', '连接成功')
+
   openSysInfo(socket)
 
   socket.on('disconnect', data => {
     console.log(data)
-    socket.emit("unConnection", '断开连接')
+    socket.emit('unConnection', '断开连接')
     closeSysInfo()
-  });
+  })
 
-});
+})
 
-
-
-
-server.listen(8081, "localhost", () => {
+server.listen(8081, 'localhost', () => {
   const host = server.address().address;
   const port = server.address().port;
-  console.log("服务器已启动，访问地址:http://%s:%s", host, port);
-});
+  console.log('服务器已启动，访问地址:http://%s:%s', host, port);
+})
+

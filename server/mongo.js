@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-
+const { mongoIP } = require('./config')
 // 连接数据库
-mongoose.connect('mongodb://localhost/storage');
+mongoose.connect(mongoIP);
 
 const db = mongoose.connection;
 

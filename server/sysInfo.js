@@ -13,12 +13,12 @@ function openSysInfo(socket) {
             let totalMem = os.totalmem() / 1024 / 1024 / 1024;
             let data = {
                 cpuUsage: (cpuUsage * 100.0).toFixed(2),
-                freeMem: freeMem.toFixed(2) + "G",
-                totalMem: totalMem.toFixed(2) + "G",
-                usedMem: (totalMem - freeMem).toFixed(2) + "G",
+                freeMem: freeMem.toFixed(2),
+                totalMem: totalMem.toFixed(2),
+                usedMem: (totalMem - freeMem).toFixed(2),
                 memUsage: ((totalMem - freeMem) / totalMem * 100.0).toFixed(2),
             };
-            socket.emit("system info", data)
+            socket.emit('system info', data)
         }, 1500)
     }
 }

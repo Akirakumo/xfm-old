@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { NavLink, withRouter } from "react-router-dom";
 import { Layout, Menu } from "antd";
-import { BookOutlined, ReadOutlined, PlayCircleOutlined, SettingOutlined, FolderOutlined } from "@ant-design/icons";
+import { 
+  BookOutlined, 
+  ReadOutlined, 
+  PlayCircleOutlined, 
+  SettingOutlined, 
+  FolderOutlined 
+} from "@ant-design/icons";
 
 import { get } from '../../ajax'
 import './index.less'

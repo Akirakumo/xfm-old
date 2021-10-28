@@ -1,11 +1,15 @@
-import React, { Suspense, useCallback, useState } from 'react'
-import { Drawer, Button } from "antd";
+import React, { Suspense, useCallback, useState, useEffect } from 'react'
+import { Drawer, Button, Row, Col, Slider } from "antd";
 
 import Loading from '../../components/Loading'
 import Comic from '../../components/ViewComic'
 import Music from '../../components/ViewMusic'
+import ViewHead from '../../components/ViewHead';
+import Search from '../../components/Search';
+import GrudSetting from '../../components/GridSetting'
 
 import './index.less'
+
 
 export default function View(props) {
 
@@ -13,6 +17,7 @@ export default function View(props) {
     const { type } = data
 
     const [visible, setVisible] = useState(false)
+    
 
     const open = useCallback( () => setVisible(true) )
     const close = useCallback( () => setVisible(false) )
@@ -31,7 +36,11 @@ export default function View(props) {
     return (
         <>
 
-            <Button type="primary" onClick={open}>Open</Button>
+            <ViewHead />
+
+            {/* <Button type="primary" onClick={open}>Open</Button> */}
+
+            <Search />
 
             <Suspense fallback={ <Loading /> }>
                 {
@@ -40,15 +49,16 @@ export default function View(props) {
             </Suspense>
 
             <Drawer
+            className="drawer"
             title="Basic Drawer"
             placement="right"
             closable={false}
             onClose={close}
             visible={visible}
             getContainer={false}
-            style={{ position: 'absolute' }}
+            width="500"
             >
-            <p>内容</p>
+                <GrudSetting />
             </Drawer>
  
         </>

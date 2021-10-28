@@ -1,8 +1,7 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Divider, List, Card, Tabs,  Button, Switch } from "antd";
 import { UserOutlined, HighlightOutlined, SmileOutlined, SmileFilled, } from "@ant-design/icons";
 
-import { AppContext, UPDATA_USERNAME } from "../../context";
 import InfoCenter from "../../components/InfoCenter";
 
 import "./index.less";
@@ -12,8 +11,6 @@ const { Title, Paragraph, Text } = Typography;
 
 export default function Setting() {
 
-  // context
-  const { state: { userName }, dispatch } = useContext(AppContext)
 
 
   // state

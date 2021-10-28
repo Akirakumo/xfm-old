@@ -1,15 +1,33 @@
-.list-card-item{
-    .card-cover {
-        width: 100%;
-        height: auto;
-    }
-    .ant-card-body {
-        padding: 0;
-        .list-card-item-title {
-            padding: 2px 5px;
+@coverWidth: 210px;
+@coverHeight: 297px;
+
+.ant-spin-container .ant-row > div .ant-col .ant-list-item {
+    padding: 0;
+    .list-card-item{
+        overflow: hidden;
+    
+        .card-cover {
+            width: 100%;
+            height: 0;
+            padding-bottom: 140%;
+            background-size: cover;
+            overflow: hidden;
         }
-        .list-card-item-tag {
-            margin: 5px;
+        .ant-card-body {
+            padding: 0;
+            .list-card-item-title {
+                padding: 2px 5px;
+    
+                overflow : hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+            }
+            .list-card-item-tag {
+                margin: 5px;
+            }
         }
     }
 }
+

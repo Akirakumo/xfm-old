@@ -1,11 +1,11 @@
-import React, { useContext, useState, useEffect, useRef, useCallback } from 'react'
+import React, { useContext, useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { Typography, Card, Row, Col, Collapse, Button  } from 'antd'
 import { SettingOutlined } from '@ant-design/icons';
 import io from 'socket.io-client'
 
-import ChartLine from '../ChartLine';
+import EChartLine from '../EChartLine';
+import G2Line from '../G2Line';
 import ViewSetting from '../ViewSetting'
-import { AppContext, UPDATA_USERNAME } from "../../context";
 import { get, path } from "../../ajax";
 
 import './index.less'
@@ -28,14 +28,23 @@ const socket = io( path, { autoConnect: false });
 
 export default function InfoCenter() {
 
-  // context
-  const { state: { userName }, dispatch } = useContext(AppContext)
-
   // state
   const [sysInfo, setSysInfo ] = useState(null)
-  const [usage, setUsage] = useState(null)
+  const [usage, setUsage] = useState({cpuUsage:0,memUsage:0})
+  const [chartData, setChartData] = useState([{time:new Date().getTime(),value:0}])
 
+  useEffect ( () => {
 
+    const time = new Date().getTime();
+    setChartData( chartData => {
+      if( chartData.length < 10 ) {
+        return [...chartData, { time, value: usage.cpuUsage }]
+      } else {
+        return chartData.slice(1).concat({ time, value: usage.cpuUsage })
+      }
+    })
+
+  },[usage])
 
   // callback
   const viewSetting = useCallback( () => {
@@ -65,7 +74,6 @@ export default function InfoCenter() {
       socket.close()
     }
   }, [])
-
 
   return (
     <>
@@ -100,8 +108,10 @@ export default function InfoCenter() {
             <Card bordered={false} >
               <Paragraph className="card-title"> CPU/内存 </Paragraph>
               <div style={{width:'100%',height:'300px'}}>
-                <ChartLine data={usage} />
+                {/* <G2Line data={chartData} /> */}
+                <EChartLine data={usage} />
               </div>
+              
             </Card>
           </Col>
 
